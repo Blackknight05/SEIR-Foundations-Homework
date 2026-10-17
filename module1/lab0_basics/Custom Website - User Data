@@ -1,1 +1,268 @@
+# TimeHub — AWS EC2 Deployment Guide
+
+This guide explains how to deploy and run the TimeHub website on an Amazon EC2 Linux instance using Apache HTTP Server (`httpd`).
+
+TimeHub includes:
+- A live Eastern Time clock
+- A date and time zone converter
+- A basic calculator
+
+## 1. Prerequisites
+
+You need:
+- An AWS account
+- An EC2 instance running a Linux distribution that supports the commands below
+- SSH access to the instance
+- The instance's public IPv4 address (for access from your browser)
+
+> **Note:** Commands below use `dnf`, which is common on Amazon Linux 2023. If your instance uses a different distribution, its package manager may differ.
+
+## 2. Connect to your EC2 instance
+
+Connect using SSH from your terminal. Replace the key path and public IP with your own values:
+
+```bash
+chmod 400 /path/to/your-key.pem
+ssh -i /path/to/your-key.pem ec2-user@YOUR-EC2-PUBLIC-IP
+```
+
+If you are using the AWS Console's browser-based connection, open **EC2 → Instances → select your instance → Connect**.
+
+## 3. Install Apache
+
+Check your Linux distribution:
+
+```bash
+cat /etc/os-release
+```
+
+For Amazon Linux 2023, install Apache with:
+
+```bash
+sudo dnf install -y httpd
+```
+
+Enable Apache to start automatically and start it now:
+
+```bash
+sudo systemctl enable --now httpd
+```
+
+Check its status:
+
+```bash
+sudo systemctl status httpd
+```
+
+Look for `Active: active (running)`.
+
+## 4. Publish the TimeHub website
+
+Apache's default website directory is:
+
+```text
+/var/www/html/
+```
+
+The homepage should be named `index.html`:
+
+```text
+/var/www/html/index.html
+```
+
+Check the directory:
+
+```bash
+sudo ls -la /var/www/html/
+```
+
+If it is empty, Apache has no homepage to serve. Create the file and paste the complete TimeHub HTML into it.
+
+One way to create or replace the file is:
+
+```bash
+sudo nano /var/www/html/index.html
+```
+
+1. Paste the full TimeHub HTML code into the editor.
+2. Save with `Ctrl + O`, then press `Enter`.
+3. Exit with `Ctrl + X`.
+
+Set readable permissions:
+
+```bash
+sudo chmod 755 /var/www
+sudo chmod 755 /var/www/html
+sudo chmod 644 /var/www/html/index.html
+```
+
+Restart Apache:
+
+```bash
+sudo systemctl restart httpd
+```
+
+> Keep a copy of your complete HTML somewhere safe before replacing the file. The commands above do not generate the full website automatically; you must paste the HTML into `index.html`.
+
+## 5. Test the site on the EC2 instance
+
+Check Apache's HTTP response:
+
+```bash
+curl -I http://localhost/
+```
+
+A successful response usually starts with:
+
+```text
+HTTP/1.1 200 OK
+```
+
+Check that the page contains the TimeHub title:
+
+```bash
+curl -s http://localhost/ | head -n 15
+```
+
+If you see `403 Forbidden`, check that `index.html` exists and that the directory and file permissions are readable. If you see `404 Not Found`, verify the URL and Apache document root.
+
+## 6. Allow HTTP traffic in AWS
+
+To make the website accessible from your browser:
+
+1. Open the **AWS Management Console**.
+2. Go to **EC2 → Instances**.
+3. Select your instance.
+4. Open the **Security** tab.
+5. Click the attached **security group**.
+6. Choose **Edit inbound rules**.
+7. Add this rule:
+
+| Setting | Value |
+|---|---|
+| Type | HTTP |
+| Protocol | TCP |
+| Port range | 80 |
+| Source | `0.0.0.0/0` for a publicly accessible website |
+
+8. Save the rules.
+
+`0.0.0.0/0` allows anyone on the internet to reach the HTTP port. For a private test site, restrict the source to your own public IP address instead.
+
+## 7. Open TimeHub in your browser
+
+In a browser, visit:
+
+```text
+http://YOUR-EC2-PUBLIC-IP/
+```
+
+Replace `YOUR-EC2-PUBLIC-IP` with the public IPv4 address shown on the EC2 instance details page.
+
+If the instance does not have a public IPv4 address, you may need to configure an appropriate public access path, such as a public IP or load balancer, along with the required network routing.
+
+## 8. Troubleshooting
+
+### Apache service is missing
+
+Check the operating system:
+
+```bash
+cat /etc/os-release
+```
+
+For Amazon Linux 2023:
+
+```bash
+sudo dnf install -y httpd
+sudo systemctl enable --now httpd
+```
+
+For older Amazon Linux 2 instances, the package manager is typically `yum`, but Amazon Linux 2 reached its announced end of support on June 30, 2026. Prefer migrating to a supported operating system rather than relying on old repositories.
+
+### Apache is running, but `curl` returns `403 Forbidden`
+
+Check the website directory and homepage:
+
+```bash
+sudo ls -la /var/www/html/
+```
+
+Create `/var/www/html/index.html` if it is missing, then apply the permissions in Step 4 and restart Apache.
+
+### `curl -I http://localhost/` works, but the public site does not
+
+Check:
+- The EC2 security group permits inbound TCP port 80.
+- The instance has a public IP address if you are accessing it directly over the internet.
+- The subnet's route table and network ACLs permit the required traffic.
+- You are using `http://`, not `https://`, unless you have configured TLS.
+
+### Apache logs
+
+View recent Apache service logs:
+
+```bash
+sudo journalctl -u httpd --no-pager -n 100
+```
+
+Common Apache log files are:
+
+```text
+/var/log/httpd/access_log
+/var/log/httpd/error_log
+```
+
+View the error log:
+
+```bash
+sudo tail -n 100 /var/log/httpd/error_log
+```
+
+## 9. Useful maintenance commands
+
+| Task | Command |
+|---|---|
+| Check Apache status | `sudo systemctl status httpd` |
+| Start Apache | `sudo systemctl start httpd` |
+| Stop Apache | `sudo systemctl stop httpd` |
+| Restart Apache | `sudo systemctl restart httpd` |
+| Enable at boot | `sudo systemctl enable httpd` |
+| Test local response | `curl -I http://localhost/` |
+| List website files | `sudo ls -la /var/www/html/` |
+
+## 10. Updating the website
+
+1. Back up the current homepage:
+
+   ```bash
+   sudo cp /var/www/html/index.html /var/www/html/index.html.bak
+   ```
+
+2. Edit the homepage:
+
+   ```bash
+   sudo nano /var/www/html/index.html
+   ```
+
+3. Save your changes.
+4. Test the response:
+
+   ```bash
+   curl -I http://localhost/
+   ```
+
+For a static HTML site, a restart of Apache is usually not required after changing the file. If you changed Apache configuration, test it first with `sudo apachectl configtest`, then restart Apache.
+
+## Deployment checklist
+
+- [ ] Apache is installed and running.
+- [ ] `/var/www/html/index.html` contains the complete TimeHub HTML.
+- [ ] `curl -I http://localhost/` returns `200 OK`.
+- [ ] The EC2 security group allows the intended inbound HTTP traffic.
+- [ ] The site loads at `http://YOUR-EC2-PUBLIC-IP/`.
+
+---
+
+**Security note:** This setup uses plain HTTP, which does not encrypt traffic. If you later use a custom domain or handle sensitive information, configure HTTPS with a valid TLS certificate.
 
