@@ -2,10 +2,10 @@
 
 | Run | Date | Time zone | Instance ID | Boot time (UTC) | Public IPv4 DNS | Screenshot | Terminated? |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| Run 1 | Oct 30, 2026 | EST | i-0719b1f6da14b8c6a | 2026-10-30 23:13:00 | ec2-3-89-105-14.compute-1.amazonaws.com | <img width="1498" height="873" alt="lab1_run1" src="https://github.com/user-attachments/assets/f7c8cdb2-8ea9-4bd3-9bac-d4faf5c9f10f" /> | Yes |
-| Run 2 | Oct 30, 2026 | EST | i-0720a3012a54fae38 | 2026-10-30 23:13:00 | ec2-13-222-161-79.compute-1.amazonaws.com | <img width="1498" height="873" alt="lab1_run2" src="https://github.com/user-attachments/assets/398b0ce8-5a14-4194-9c38-39b67702da9b" />| Yes |
-| Run 3 | Oct 30, 2026 | EST | i-0a9886d9fce8f9354 | 2026-10-30 23:13:00 | ec2-3-91-234-244.compute-1.amazonaws.com | <img width="1498" height="873" alt="lab1_run3" src="https://github.com/user-attachments/assets/bb20dda4-2039-4ea2-a689-31b72ad0173b" />| Yes |
-| Run 4 | YYYY-MM-DD | EST | i-0123456789abcdef3 | YYYY-MM-DD HH:MM:SS | ec2-xx-xx-xx-xx.compute-1.amazonaws.com | lab1_run4.jpg | Yes |
-| Run 5 | YYYY-MM-DD | EST | i-0123456789abcdef4 | YYYY-MM-DD HH:MM:SS | ec2-xx-xx-xx-xx.compute-1.amazonaws.com | lab1_run5.jpg | Yes |
-| Run 6 | YYYY-MM-DD | EST | i-0123456789abcdef5 | YYYY-MM-DD HH:MM:SS | ec2-xx-xx-xx-xx.compute-1.amazonaws.com | lab1_run6.jpg | Yes |
-| Run 7 | YYYY-MM-DD | EST | i-0123456789abcdef6 | YYYY-MM-DD HH:MM:SS | ec2-xx-xx-xx-xx.compute-1.amazonaws.com | lab1_run7.jpg | Yes |
+| Run 1 | Oct 30, 2026 | EST | i-0719b1f6da14b8c6a | 2026-10-30 23:26:11| ec2-3-89-105-14.compute-1.amazonaws.com | <img width="1498" height="873" alt="lab1_run1" src="https://github.com/user-attachments/assets/f7c8cdb2-8ea9-4bd3-9bac-d4faf5c9f10f" /> | Yes |
+| Run 2 | Oct 30, 2026 | EST | i-0720a3012a54fae38 | 2026-10-30 23:39:55 | ec2-13-222-161-79.compute-1.amazonaws.com | <img width="1498" height="873" alt="lab1_run2" src="https://github.com/user-attachments/assets/398b0ce8-5a14-4194-9c38-39b67702da9b" />| Yes |
+| Run 3 | Oct 30, 2026 | EST | i-0a9886d9fce8f9354 | 2026-10-30 23:45:50 | ec2-3-91-234-244.compute-1.amazonaws.com | <img width="1498" height="873" alt="lab1_run3" src="https://github.com/user-attachments/assets/bb20dda4-2039-4ea2-a689-31b72ad0173b" />| Yes |
+| Run 4 | Oct 31, 2026 | EST | -0a9f775d5c94eedab | 2026-10-31 13:36:41 | ec2-52-91-129-80.compute-1.amazonaws.com | <img width="1498" height="873" alt="lab1_run4" src="https://github.com/user-attachments/assets/ed6c8981-1b14-4618-b712-fb31d9fb32ab" /> | Yes |
+| Run 5 | Oct 31, 2026 | EST | i-0883800354fd8922e | 2026-10-31 13:49:17 | ec2-54-146-246-177.compute-1.amazonaws.com | <img width="1498" height="873" alt="lab1_run5" src="https://github.com/user-attachments/assets/41edbf6f-8ca9-4f10-b640-3abe503fb449" />| Yes |
+| Run 6 | Nov 01, 2026 | EST | i-0123456789abcdef5 | YYYY-MM-DD HH:MM:SS | ec2-xx-xx-xx-xx.compute-1.amazonaws.com | lab1_run6.jpg | Yes |
+| Run 7 | Nov 01, 2026 | EST | i-0123456789abcdef6 | YYYY-MM-DD HH:MM:SS | ec2-xx-xx-xx-xx.compute-1.amazonaws.com | lab1_run7.jpg | Yes |
